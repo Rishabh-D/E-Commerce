@@ -9,10 +9,10 @@ export function fetchAllProducts() {
     });
 }
 
-export function fetchProductsByFilters({ filter, sort }) {
+export function fetchProductsByFilters({ filter, sort, pagination }) {
     // filter ={"brand":["apple", "samsung"], "key2":[val1]}
     let queryString = "";
-    console.log("sort inside fetch", sort);
+    console.log("sort inside fetch:pagination", pagination);
     // console.log(filter, "lol", Object.keys(filter));
     for (let key in filter) {
         if (key === "_sort" || key === "_order") continue;
@@ -37,7 +37,8 @@ export function fetchProductsByFilters({ filter, sort }) {
     // 	}
     // }
 
-    queryString += `_sort=${sort._sort}&_order=${sort._order}`;
+    queryString += `_sort=${sort._sort}&_order=${sort._order}&`;
+    queryString += `_page=${pagination._page}&_limit=${pagination._limits}`;
 
     console.log("queryString:", queryString);
 
@@ -47,7 +48,8 @@ export function fetchProductsByFilters({ filter, sort }) {
             `http://localhost:8080/products?` + queryString
         );
         const data = await response.json();
+        const totalItems = await response.headers.get("X-Total-Count");
         // console.log(data);
-        resolve({ data });
+        resolve({ data: { products: data, totalItems } });
     });
 }
