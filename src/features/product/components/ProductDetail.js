@@ -4,6 +4,9 @@ import { RadioGroup } from "@headlessui/react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductByIdAsync, selectProductById } from "../ProductSlice";
+import { addToCartAsync } from "../../cart/CartSlice";
+import { selectLoggedInUser } from "../../auth/AuthSlice";
+import { nanoid } from "@reduxjs/toolkit";
 // import { fetchProductById } from "../ProductAPI";
 
 // TODO: in server data we will add more of sizes, colors, highlights to each ptoduct
@@ -34,12 +37,19 @@ export default function ProductDetail() {
     const product = useSelector(selectProductById);
     const dispatch = useDispatch();
     const params = useParams();
+    const user = useSelector(selectLoggedInUser);
     console.log("INSIDE PRODUCT DETAILS");
 
     useEffect(() => {
         console.log("in product details useeddect");
         dispatch(fetchProductByIdAsync(params.id));
     }, [dispatch, params.id]);
+
+    const handleCart = (e) => {
+        e.preventDefault();
+        console.log("handle cart running!", product);
+        dispatch(addToCartAsync({ ...product, quantity: 1, user: user.id }));
+    };
 
     return (
         <div className="bg-white">
@@ -321,6 +331,7 @@ export default function ProductDetail() {
                                 </div>
                                 <Link to="/cart">
                                     <button
+                                        onClick={handleCart}
                                         type="submit"
                                         className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                     >
