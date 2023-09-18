@@ -1,30 +1,83 @@
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Cart from "../features/cart/Cart";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    selectLoggedInUser,
+    updateUserAsync,
+} from "../features/auth/AuthSlice";
+import { useState } from "react";
+import { createOrderAsync } from "../features/order/OrderSlice";
+import { selectItems } from "../features/cart/CartSlice";
 
-const addresses = [
-    {
-        name: "John Wicj",
-        street: "11th Main",
-        city: "Delhi",
-        pinCode: 110002,
-        state: "Delhi",
-        phone: 12123313,
-    },
-    {
-        name: "John main",
-        street: "11th iwdj",
-        city: "Mumbai",
-        pinCode: 1111002,
-        state: "Delhi",
-        phone: 92424,
-    },
-];
 export default function Checkout() {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm();
+    const dispatch = useDispatch();
+    const user = useSelector(selectLoggedInUser);
+    const [selectedAddress, setSelectedAddress] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState("cash");
+
+    //same as Cart
+    const items = useSelector(selectItems);
+
+    const totalAmount = items.reduce(
+        (amount, item) => item.price * item.quantity + amount,
+        0
+    );
+    const totalItems = items.reduce((total, item) => item.quantity + total, 0);
+    //same as cart end
+
+    const handleAddress = (e) => {
+        console.log(e.target.value);
+        setSelectedAddress(user.addresses[e.target.value]);
+    };
+    const handlePayment = (e) => {
+        console.log(e.target.value);
+        setPaymentMethod(e.target.value);
+    };
+
+    const handleOrder = (e) => {
+        console.log("handler from checkout::cart");
+        // console.log(e);
+        const order = {
+            items: items,
+            totalAmount,
+            totalItems,
+            user,
+            paymentMethod,
+            selectedAddress,
+        };
+        dispatch(createOrderAsync(order));
+
+        //TODO
+        //1. redirect to order success page
+        //2. clear cart after order
+        //3. on server changethe stock number of items
+    };
+
     return (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 my-4">
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
                 <div className="lg:col-span-3">
-                    <form className="bg-white px-5">
+                    <form
+                        className="bg-white px-5"
+                        noValidate
+                        onSubmit={handleSubmit((data) => {
+                            console.log("address", data);
+                            dispatch(
+                                updateUserAsync({
+                                    ...user,
+                                    addresses: [...user.addresses, data],
+                                })
+                            );
+                        })}
+                        method="POST"
+                    >
                         <div className="space-y-12">
                             <div className="border-b border-gray-900/10 pb-12">
                                 <h2 className="text-base py-12 text-xl font-semibold leading-7 text-gray-900">
@@ -38,35 +91,20 @@ export default function Checkout() {
                                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div className="sm:col-span-3">
                                         <label
-                                            htmlFor="first-name"
+                                            htmlFor="name"
                                             className="block text-sm font-medium leading-6 text-gray-900"
                                         >
-                                            First name
+                                            Full name
                                         </label>
                                         <div className="mt-2">
                                             <input
                                                 type="text"
-                                                name="first-name"
-                                                id="first-name"
-                                                autoComplete="given-name"
-                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="sm:col-span-3">
-                                        <label
-                                            htmlFor="last-name"
-                                            className="block text-sm font-medium leading-6 text-gray-900"
-                                        >
-                                            Last name
-                                        </label>
-                                        <div className="mt-2">
-                                            <input
-                                                type="text"
-                                                name="last-name"
-                                                id="last-name"
-                                                autoComplete="family-name"
+                                                name="name"
+                                                id="name"
+                                                {...register("name", {
+                                                    required:
+                                                        "name is required",
+                                                })}
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
@@ -84,7 +122,10 @@ export default function Checkout() {
                                                 id="email"
                                                 name="email"
                                                 type="email"
-                                                autoComplete="email"
+                                                {...register("email", {
+                                                    required:
+                                                        "email is required",
+                                                })}
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
@@ -92,28 +133,28 @@ export default function Checkout() {
 
                                     <div className="sm:col-span-3">
                                         <label
-                                            htmlFor="country"
+                                            htmlFor="phone"
                                             className="block text-sm font-medium leading-6 text-gray-900"
                                         >
-                                            Country
+                                            phone
                                         </label>
                                         <div className="mt-2">
-                                            <select
-                                                id="country"
-                                                name="country"
-                                                autoComplete="country-name"
+                                            <input
+                                                id="phone"
+                                                name="phone"
+                                                type="tel"
+                                                {...register("phone", {
+                                                    required:
+                                                        "phone is required",
+                                                })}
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                                            >
-                                                <option>United States</option>
-                                                <option>Canada</option>
-                                                <option>Mexico</option>
-                                            </select>
+                                            ></input>
                                         </div>
                                     </div>
 
                                     <div className="col-span-full">
                                         <label
-                                            htmlFor="street-address"
+                                            htmlFor="street"
                                             className="block text-sm font-medium leading-6 text-gray-900"
                                         >
                                             Street address
@@ -121,9 +162,12 @@ export default function Checkout() {
                                         <div className="mt-2">
                                             <input
                                                 type="text"
-                                                name="street-address"
-                                                id="street-address"
-                                                autoComplete="street-address"
+                                                name="street"
+                                                id="street"
+                                                {...register("street", {
+                                                    required:
+                                                        "street is required",
+                                                })}
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
@@ -141,7 +185,10 @@ export default function Checkout() {
                                                 type="text"
                                                 name="city"
                                                 id="city"
-                                                autoComplete="address-level2"
+                                                {...register("city", {
+                                                    required:
+                                                        "city is required",
+                                                })}
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
@@ -149,7 +196,7 @@ export default function Checkout() {
 
                                     <div className="sm:col-span-2">
                                         <label
-                                            htmlFor="region"
+                                            htmlFor="state"
                                             className="block text-sm font-medium leading-6 text-gray-900"
                                         >
                                             State / Province
@@ -157,9 +204,12 @@ export default function Checkout() {
                                         <div className="mt-2">
                                             <input
                                                 type="text"
-                                                name="region"
-                                                id="region"
-                                                autoComplete="address-level1"
+                                                name="state"
+                                                id="state"
+                                                {...register("state", {
+                                                    required:
+                                                        "state is required",
+                                                })}
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
@@ -167,7 +217,7 @@ export default function Checkout() {
 
                                     <div className="sm:col-span-2">
                                         <label
-                                            htmlFor="postal-code"
+                                            htmlFor="pinCode"
                                             className="block text-sm font-medium leading-6 text-gray-900"
                                         >
                                             ZIP / Postal code
@@ -175,9 +225,12 @@ export default function Checkout() {
                                         <div className="mt-2">
                                             <input
                                                 type="text"
-                                                name="postal-code"
-                                                id="postal-code"
-                                                autoComplete="postal-code"
+                                                name="pinCode"
+                                                id="pinCode"
+                                                {...register("pinCode", {
+                                                    required:
+                                                        "pinCode is required",
+                                                })}
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             />
                                         </div>
@@ -210,15 +263,17 @@ export default function Checkout() {
 
                                 {/* added stacked list from tailwind template below for address */}
                                 <ul role="list">
-                                    {addresses.map((address) => (
+                                    {user.addresses.map((address, index) => (
                                         <li
-                                            key={address.email}
+                                            key={index}
                                             className="flex justify-between gap-x-6 py-5 px-5 border-solid border-2 border-gray"
                                         >
                                             <div className="flex min-w-0 gap-x-4">
                                                 <input
                                                     name="address"
                                                     type="radio"
+                                                    onChange={handleAddress}
+                                                    value={index}
                                                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                                 />
                                                 <div className="min-w-0 flex-auto">
@@ -257,8 +312,13 @@ export default function Checkout() {
                                             <div className="flex items-center gap-x-3">
                                                 <input
                                                     id="card"
+                                                    onChange={handlePayment}
                                                     name="payments"
                                                     type="radio"
+                                                    value="card"
+                                                    checked={
+                                                        paymentMethod === "card"
+                                                    }
                                                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                                 />
                                                 <label
@@ -271,8 +331,13 @@ export default function Checkout() {
                                             <div className="flex items-center gap-x-3">
                                                 <input
                                                     id="cash"
+                                                    onChange={handlePayment}
                                                     name="payments"
                                                     type="radio"
+                                                    value="cash"
+                                                    checked={
+                                                        paymentMethod === "cash"
+                                                    }
                                                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                                                 />
                                                 <label
@@ -290,7 +355,12 @@ export default function Checkout() {
                     </form>
                 </div>
                 <div className="lg:col-span-2">
-                    <Cart pageName="checkout" btnText="Pay Now" link="/pay" />
+                    <Cart
+                        pageName="checkout"
+                        btnText="Order Now"
+                        link="/pay"
+                        handler={handleOrder}
+                    />
                 </div>
             </div>
         </div>

@@ -12,7 +12,7 @@ import { Navigate } from "react-router-dom";
 import { Grid } from "react-loader-spinner";
 import Modal from "../common/Modal";
 
-export default function Cart() {
+export default function Cart({ pageName, btnText, link, handler = () => {} }) {
     const dispatch = useDispatch();
 
     const items = useSelector(selectItems);
@@ -180,10 +180,10 @@ export default function Cart() {
                         </p>
                         <div className="mt-6">
                             <Link
-                                to="/checkout"
+                                to={link}
                                 className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                             >
-                                Checkout
+                                <button onClick={handler}>{btnText}</button>
                             </Link>
                         </div>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
