@@ -21,9 +21,9 @@ const navigation = [
     { name: "Reports", href: "#", current: false },
 ];
 const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
-    { name: "Sign out", href: "#" },
+    { name: "Your Profile", link: "#" },
+    { name: "Settings", link: "#" },
+    { name: "Sign out", link: "/login" },
 ];
 
 function classNames(...classes) {
@@ -130,9 +130,9 @@ export default function Navbar({ children }) {
                                                                     {({
                                                                         active,
                                                                     }) => (
-                                                                        <a
-                                                                            href={
-                                                                                item.href
+                                                                        <Link
+                                                                            to={
+                                                                                item.link
                                                                             }
                                                                             className={classNames(
                                                                                 active
@@ -144,7 +144,7 @@ export default function Navbar({ children }) {
                                                                             {
                                                                                 item.name
                                                                             }
-                                                                        </a>
+                                                                        </Link>
                                                                     )}
                                                                 </Menu.Item>
                                                             )
@@ -239,7 +239,7 @@ export default function Navbar({ children }) {
                                             <Disclosure.Button
                                                 key={item.name}
                                                 as="a"
-                                                href={item.href}
+                                                href={item.link}
                                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                                             >
                                                 {item.name}
