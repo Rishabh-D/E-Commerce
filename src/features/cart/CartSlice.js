@@ -54,11 +54,15 @@ export const deleteItemFromCartAsync = createAsyncThunk(
     }
 );
 
-export const resetCartAsync = createAsyncThunk("cart/resetCart", async () => {
-    const response = await resetCart();
-    // The value we return becomes the `fulfilled` action payload
-    return response.data;
-});
+export const resetCartAsync = createAsyncThunk(
+    "cart/resetCart",
+    async (userId) => {
+        const response = await resetCart(userId);
+        // The value we return becomes the `fulfilled` action payload
+        console.log("reset Cart ran");
+        return response.data;
+    }
+);
 
 export const cartSlice = createSlice({
     name: "cart",
@@ -110,7 +114,7 @@ export const cartSlice = createSlice({
             })
             .addCase(resetCartAsync.fulfilled, (state, action) => {
                 state.status = "idle";
-                state.items = [];
+                state.items = []; // empty the items when cart is empty (local)
             });
     },
 });
