@@ -37,3 +37,10 @@ export function checkUser(loginInfo) {
         // TODO; from server it will return only relevant info
     });
 }
+
+export function signOut(userId) {
+    return new Promise(async (resolve) => {
+        /// this will be used by thunk to just delete the local version of loggedInuser
+        resolve({ data: "success" });
+    });
+}
