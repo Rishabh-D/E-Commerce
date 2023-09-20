@@ -20,8 +20,9 @@ import { selectLoggedInUser } from "./features/auth/AuthSlice";
 import Order from "./features/order/Order";
 import PageNotFound from "./pages/PageNotFound";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
-import UserOrders from "./features/user/components/UserOrders";
 import UserOrdersPage from "./pages/UserOrdersPage";
+import UserProfilePage from "./pages/UserProfilePage";
+import { fetchLoggedInUserAsync } from "./features/user/userSlice";
 
 const router = createBrowserRouter([
     {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
         element: <UserOrdersPage />,
     },
     {
+        path: "/profile",
+        element: <UserProfilePage />,
+    },
+    {
         path: "*",
         element: <PageNotFound />,
     },
@@ -93,7 +98,10 @@ function App() {
     const user = useSelector(selectLoggedInUser);
     useEffect(() => {
         console.log("from APPPPP");
-        if (user) dispatch(fetchItemsByUserIdAsync(user.id));
+        if (user) {
+            dispatch(fetchItemsByUserIdAsync(user.id));
+            dispatch(fetchLoggedInUserAsync(user.id));
+        }
     }, [dispatch, user]);
     return (
         <div className="App">

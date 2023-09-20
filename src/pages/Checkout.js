@@ -2,10 +2,9 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Cart from "../features/cart/Cart";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    selectLoggedInUser,
-    updateUserAsync,
-} from "../features/auth/AuthSlice";
+// import { selectLoggedInUser } from "../features/auth/AuthSlice";
+
+import { selectUserInfo, updateUserAsync } from "../features/user/userSlice";
 import { useEffect, useState } from "react";
 import {
     createOrderAsync,
@@ -24,7 +23,8 @@ export default function Checkout() {
         formState: { errors },
     } = useForm();
     const dispatch = useDispatch();
-    const user = useSelector(selectLoggedInUser);
+    // const user = useSelector(selectLoggedInUser);
+    const user = useSelector(selectUserInfo);
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState("cash");
     const currentOrder = useSelector(selectCurrentOrder);

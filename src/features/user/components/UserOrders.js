@@ -2,12 +2,13 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
     fetchLoggedInUserOrderAsync,
+    selectUserInfo,
     // selectUserInfo,
     // selectUserInfoStatus,
     selectUserOrders,
 } from "../userSlice";
 import { Grid } from "react-loader-spinner";
-import { selectLoggedInUser } from "../../auth/AuthSlice";
+// import { selectLoggedInUser } from "../../auth/AuthSlice";
 
 export default function UserOrders() {
     const dispatch = useDispatch();
@@ -15,7 +16,8 @@ export default function UserOrders() {
     // const status = useSelector(selectUserInfoStatus);
     const status = undefined;
     // const user = useSelector(selectLoggedInUser); // to be removed later
-    const user = { id: 1 };
+    const user = useSelector(selectUserInfo);
+    // const user = { id: 1 };
     console.log("user", user);
 
     useEffect(() => {
