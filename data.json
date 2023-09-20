@@ -1856,6 +1856,50 @@
         "https://i.dummyjson.com/data/products/6/thumbnail.png"
       ],
       "id": 101
+    },
+    {
+      "title": "TestProduct_modified",
+      "description": "this is a test product_ghgh",
+      "brand": "Samsung",
+      "colors": [
+        {
+          "name": "Gray",
+          "class": "bg-gray-200",
+          "selectedClass": "ring-gray-400",
+          "id": "gray"
+        }
+      ],
+      "sizes": [
+        {
+          "name": "L",
+          "inStock": true,
+          "id": "l"
+        }
+      ],
+      "category": "home-decoration",
+      "price": 2500,
+      "discountPercentage": 10,
+      "stock": 3,
+      "thumbnail": "https://images.unsplash.com/photo-1596450730387-2564359a3337?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDd8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+      "highlight1": "best in class",
+      "highlight2": "1st rank",
+      "highlight3": "awardee",
+      "highlight4": "no-highlight",
+      "images": [
+        "https://images.unsplash.com/photo-1596450730387-2564359a3337?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDd8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+        "https://images.unsplash.com/photo-1596450730387-2564359a3337?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDd8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+        "https://images.unsplash.com/photo-1596450730387-2564359a3337?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDd8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+        "https://images.unsplash.com/photo-1596450730387-2564359a3337?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDd8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
+      ],
+      "highlights": [
+        "best in class",
+        "1st rank",
+        "awardee",
+        "no-highlight"
+      ],
+      "rating": 0,
+      "id": 102,
+      "deleted": true
     }
   ],
   "brands": [
@@ -2378,6 +2422,13 @@
         }
       ],
       "id": 1
+    },
+    {
+      "email": "admin@gmail.com",
+      "password": "12@Aa321",
+      "addresses": [],
+      "id": 2,
+      "role": "admin"
     }
   ],
   "cart": [],
@@ -2765,6 +2816,44 @@
       },
       "status": "pending",
       "id": 5
+    },
+    {
+      "items": [
+        {
+          "id": 2,
+          "title": "iPhone X",
+          "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+          "price": 1111,
+          "discountPercentage": 17.94,
+          "rating": 0,
+          "stock": 34,
+          "brand": "Apple",
+          "category": "smartphones",
+          "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+          "images": [
+            "https://i.dummyjson.com/data/products/2/1.jpg",
+            "https://i.dummyjson.com/data/products/2/2.jpg",
+            "https://i.dummyjson.com/data/products/2/3.jpg",
+            "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+          ],
+          "deleted": true,
+          "quantity": 1,
+          "user": 2
+        }
+      ],
+      "totalAmount": 1111,
+      "totalItems": 1,
+      "user": {
+        "email": "admin@gmail.com",
+        "password": "12@Aa321",
+        "addresses": [],
+        "id": 2,
+        "role": "admin"
+      },
+      "paymentMethod": "cash",
+      "selectedAddress": null,
+      "status": "pending",
+      "id": 6
     }
   ]
 }
