@@ -2431,7 +2431,28 @@
       "role": "admin"
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "id": 4,
+      "title": "OPPOF19",
+      "description": "OPPO F19 is officially announced on April 2021.",
+      "price": 300,
+      "discountPercentage": 17.91,
+      "rating": 0,
+      "stock": 123,
+      "brand": "OPPO",
+      "category": "smartphones",
+      "thumbnail": "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
+      "images": [
+        "https://i.dummyjson.com/data/products/4/1.jpg",
+        "https://i.dummyjson.com/data/products/4/2.jpg",
+        "https://i.dummyjson.com/data/products/4/3.jpg",
+        "https://i.dummyjson.com/data/products/4/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "user": 1
+    }
+  ],
   "orders": [
     {
       "items": [
@@ -2503,8 +2524,9 @@
         "state": "Maha",
         "pinCode": "654123"
       },
-      "status": "pending",
-      "id": 1
+      "status": "delivered",
+      "id": 1,
+      "paymentStatus": "received"
     },
     {
       "items": [
@@ -2577,7 +2599,8 @@
         "pinCode": "654123"
       },
       "status": "pending",
-      "id": 2
+      "id": 2,
+      "paymentStatus": "received"
     },
     {
       "items": [
@@ -2814,7 +2837,7 @@
         "state": "Karnataka",
         "pinCode": "560034"
       },
-      "status": "pending",
+      "status": "cancelled",
       "id": 5
     },
     {
@@ -2851,7 +2874,15 @@
         "role": "admin"
       },
       "paymentMethod": "cash",
-      "selectedAddress": null,
+      "selectedAddress": {
+        "name": "Abhishek Rathore",
+        "email": "test@gmail.com",
+        "phone": "1234567788",
+        "street": "11th Main",
+        "city": "Banaglore",
+        "state": "Karnataka",
+        "pinCode": "560034"
+      },
       "status": "pending",
       "id": 6
     }
