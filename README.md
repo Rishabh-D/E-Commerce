@@ -1,6 +1,6 @@
 # E-Commerce Project
 
-This is an e-commerce project built with modern web technologies. You can check out the live site here.
+This is an e-commerce project built with modern web technologies. You can check out the live site [here](https://e-commerce-project-blue-phi.vercel.app/).
 
 ## Technical Details
 
